@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  go-app:
+    container_name: go-app
+    image: francescoxx/go-app:1.0.0
+    build: .
+    environment:
+      DATABASE_URL: "host=localhost port=5432 user=postgres password=MishaAdmin dbname=fiber_demo sslmode=disable client_encoding=UTF8"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - go_db
+  go_db:
+    container_name: go_db
+    image: postgres:17
+    environment:
+      POSTGRES_PASSWORD: MishaAdmin
+      POSTGRES_USER: postgres
+      POSTGRES_DB: fiber_demo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:  
+  pgdata: {}
